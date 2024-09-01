@@ -13,7 +13,7 @@ public class BombelekTarget : TargetRules
 
         //bUseLoggingInShipping = true;
         Type = TargetType.Game;
-        ExtraModuleNames.AddRange(new string[] { "Bombelek" });
+        ExtraModuleNames.AddRange(new string[] { "Bombelek", "ShaderCompiler" });
         //bUsePCHFiles = false;
         //bUseUnityBuild = false;
 

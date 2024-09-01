@@ -1,7 +1,3 @@
-// Copyright 2016-2020 Cadic AB. All Rights Reserved.
-// @Author	Fredrik Lindh [Temaran] (temaran@gmail.com) {https://github.com/Temaran}
-///////////////////////////////////////////////////////////////////////////////////////
-
 #include "PixelShaderExample.h"
 #include "ShaderParameterUtils.h"
 #include "RHIStaticStates.h"
@@ -15,6 +11,7 @@
 #include "RHICommandList.h"
 #include "Containers/DynamicRHIResourceArray.h"
 #include "Runtime/RenderCore/Public/PixelShaderUtils.h"
+#include "DataDrivenShaderPlatformInfo.h"
 
 /************************************************************************/
 /* Simple static vertex buffer.                                         */
@@ -94,7 +91,7 @@ public:
 IMPLEMENT_GLOBAL_SHADER(FSimplePassThroughVS, "/TutorialShaders/Private/PixelShader.usf", "MainVertexShader", SF_Vertex);
 IMPLEMENT_GLOBAL_SHADER(FPixelShaderExamplePS, "/TutorialShaders/Private/PixelShader.usf", "MainPixelShader", SF_Pixel);
 
-void FPixelShaderExample::DrawToRenderTarget_RenderThread(FRHICommandListImmediate& RHICmdList, const FShaderUsageExampleParameters& DrawParameters, FTextureRHIRef ComputeShaderOutput)
+void FPixelShaderExample::DrawToRenderTarget_RenderThread(FRHICommandListImmediate& RHICmdList, const FShaderCompilerParameters& DrawParameters, FTextureRHIRef ComputeShaderOutput)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(STAT_ShaderPlugin_PixelShader); // Used to gather CPU profiling data for the UE4 session frontend
 	SCOPED_DRAW_EVENT(RHICmdList, ShaderPlugin_Pixel); // Used to profile GPU activity and add metadata to be consumed by for example RenderDoc

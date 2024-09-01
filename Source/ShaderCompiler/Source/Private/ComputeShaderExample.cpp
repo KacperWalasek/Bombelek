@@ -1,7 +1,3 @@
-// Copyright 2016-2020 Cadic AB. All Rights Reserved.
-// @Author	Fredrik Lindh [Temaran] (temaran@gmail.com) {https://github.com/Temaran}
-///////////////////////////////////////////////////////////////////////////////////////
-
 #include "ComputeShaderExample.h"
 #include "ShaderParameterUtils.h"
 #include "RHIStaticStates.h"
@@ -51,7 +47,7 @@ public:
 //                            ShaderType                            ShaderPath                     Shader function name    Type
 IMPLEMENT_GLOBAL_SHADER(FComputeShaderExampleCS, "/TutorialShaders/Private/ComputeShader.usf", "MainComputeShader", SF_Compute);
 
-void FComputeShaderExample::RunComputeShader_RenderThread(FRHICommandListImmediate& RHICmdList, const FShaderUsageExampleParameters& DrawParameters, FUnorderedAccessViewRHIRef ComputeShaderOutputUAV)
+void FComputeShaderExample::RunComputeShader_RenderThread(FRHICommandListImmediate& RHICmdList, const FShaderCompilerParameters& DrawParameters, FUnorderedAccessViewRHIRef ComputeShaderOutputUAV)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(STAT_ShaderPlugin_ComputeShader); // Used to gather CPU profiling data for the UE4 session frontend
 	SCOPED_DRAW_EVENT(RHICmdList, ShaderPlugin_Compute); // Used to profile GPU activity and add metadata to be consumed by for example RenderDoc

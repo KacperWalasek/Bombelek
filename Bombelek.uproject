@@ -8,6 +8,11 @@
 			"Name": "Bombelek",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "ShaderCompiler",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -17,8 +22,7 @@
 			"SupportedTargetPlatforms": [
 				"Win64",
 				"Linux",
-				"Android",
-				"HoloLens"
+				"Android"
 			]
 		},
 		{
@@ -28,7 +32,8 @@
 				"Win64",
 				"Linux",
 				"Android",
-				"HoloLens"
+				"Mac",
+				"IOS"
 			]
 		},
 		{
@@ -42,7 +47,8 @@
 				"Win64",
 				"Linux",
 				"Android",
-				"HoloLens"
+				"Mac",
+				"IOS"
 			]
 		},
 		{
@@ -60,8 +66,7 @@
 			"SupportedTargetPlatforms": [
 				"Win64",
 				"Linux",
-				"Android",
-				"HoloLens"
+				"Android"
 			]
 		}
 	],

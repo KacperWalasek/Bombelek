@@ -1,8 +1,4 @@
-// Copyright 2016-2020 Cadic AB. All Rights Reserved.
-// @Author	Fredrik Lindh [Temaran] (temaran@gmail.com) {https://github.com/Temaran}
-///////////////////////////////////////////////////////////////////////////////////////
-
-#include "ShaderDeclarationDemoModule.h"
+#include "ShaderCompilerModule.h"
 
 #include "ComputeShaderExample.h"
 #include "PixelShaderExample.h"
@@ -14,32 +10,33 @@
 #include "RHICommandList.h"
 #include "RenderGraphBuilder.h"
 #include "RenderTargetPool.h"
-#include "Runtime/Core/Public/Modules/ModuleManager.h"
+#include "Modules/ModuleManager.h"
 #include "Interfaces/IPluginManager.h"
 
-IMPLEMENT_MODULE(FShaderDeclarationDemoModule, ShaderDeclarationDemo)
+IMPLEMENT_MODULE(FShaderCompilerModule, ShaderCompiler)
 
 // Declare some GPU stats so we can track them later
 DECLARE_GPU_STAT_NAMED(ShaderPlugin_Render, TEXT("ShaderPlugin: Root Render"));
 DECLARE_GPU_STAT_NAMED(ShaderPlugin_Compute, TEXT("ShaderPlugin: Render Compute Shader"));
 DECLARE_GPU_STAT_NAMED(ShaderPlugin_Pixel, TEXT("ShaderPlugin: Render Pixel Shader"));
 
-void FShaderDeclarationDemoModule::StartupModule()
+void FShaderCompilerModule::StartupModule()
 {
 	OnPostResolvedSceneColorHandle.Reset();
 	bCachedParametersValid = false;
 
-	// Maps virtual shader source directory to the plugin's actual shaders directory.
-	FString PluginShaderDir = FPaths::Combine(IPluginManager::Get().FindPlugin(TEXT("TemaranShaderTutorial"))->GetBaseDir(), TEXT("Shaders"));
-	AddShaderSourceDirectoryMapping(TEXT("/TutorialShaders"), PluginShaderDir);
+	//auto var1 = IPluginManager::Get().FindPlugin(TEXT("ShaderCompiler"));
+	//auto var2 = var1->GetBaseDir();
+	//FString PluginShaderDir = FPaths::Combine(var2, TEXT("Shaders"));
+	//AddShaderSourceDirectoryMapping(TEXT("/ShaderCompiler"), PluginShaderDir);
 }
 
-void FShaderDeclarationDemoModule::ShutdownModule()
+void FShaderCompilerModule::ShutdownModule()
 {
 	EndRendering();
 }
 
-void FShaderDeclarationDemoModule::BeginRendering()
+void FShaderCompilerModule::BeginRendering()
 {
 	if (OnPostResolvedSceneColorHandle.IsValid())
 	{
@@ -52,11 +49,11 @@ void FShaderDeclarationDemoModule::BeginRendering()
 	IRendererModule* RendererModule = FModuleManager::GetModulePtr<IRendererModule>(RendererModuleName);
 	if (RendererModule)
 	{
-		OnPostResolvedSceneColorHandle = RendererModule->GetResolvedSceneColorCallbacks().AddRaw(this, &FShaderDeclarationDemoModule::PostResolveSceneColor_RenderThread);
+		OnPostResolvedSceneColorHandle = RendererModule->GetResolvedSceneColorCallbacks().AddRaw(this, &FShaderCompilerModule::PostResolveSceneColor_RenderThread);
 	}
 }
 
-void FShaderDeclarationDemoModule::EndRendering()
+void FShaderCompilerModule::EndRendering()
 {
 	if (!OnPostResolvedSceneColorHandle.IsValid())
 	{
@@ -73,7 +70,7 @@ void FShaderDeclarationDemoModule::EndRendering()
 	OnPostResolvedSceneColorHandle.Reset();
 }
 
-void FShaderDeclarationDemoModule::UpdateParameters(FShaderUsageExampleParameters& DrawParameters)
+void FShaderCompilerModule::UpdateParameters(FShaderCompilerParameters& DrawParameters)
 {
 	RenderEveryFrameLock.Lock();
 	CachedShaderUsageExampleParameters = DrawParameters;
@@ -81,7 +78,7 @@ void FShaderDeclarationDemoModule::UpdateParameters(FShaderUsageExampleParameter
 	RenderEveryFrameLock.Unlock();
 }
 
-void FShaderDeclarationDemoModule::PostResolveSceneColor_RenderThread(FRDGBuilder& builder, const FSceneTextures& SceneTexture)
+void FShaderCompilerModule::PostResolveSceneColor_RenderThread(FRDGBuilder& builder, const FSceneTextures& SceneTexture)
 {
 	if (!bCachedParametersValid)
 	{
@@ -90,13 +87,13 @@ void FShaderDeclarationDemoModule::PostResolveSceneColor_RenderThread(FRDGBuilde
 
 	// Depending on your data, you might not have to lock here, just added this code to show how you can do it if you have to.
 	RenderEveryFrameLock.Lock();
-	FShaderUsageExampleParameters Copy = CachedShaderUsageExampleParameters;
+	FShaderCompilerParameters Copy = CachedShaderUsageExampleParameters;
 	RenderEveryFrameLock.Unlock();
 
 	Draw_RenderThread(Copy);
 }
 
-void FShaderDeclarationDemoModule::Draw_RenderThread(const FShaderUsageExampleParameters& DrawParameters)
+void FShaderCompilerModule::Draw_RenderThread(const FShaderCompilerParameters& DrawParameters)
 {
 	check(IsInRenderingThread());
 

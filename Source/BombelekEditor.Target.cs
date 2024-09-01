@@ -11,7 +11,7 @@ public class BombelekEditorTarget : TargetRules
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 
         Type = TargetType.Editor;
-        ExtraModuleNames.AddRange(new string[] { "Bombelek" });
+        ExtraModuleNames.AddRange(new string[] { "Bombelek", "ShaderCompiler" });
 		//bUseUnityBuild = false;
 		//bUsePCHFiles = false;
     }
